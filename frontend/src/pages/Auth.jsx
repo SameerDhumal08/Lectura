@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import { GraduationCap } from 'lucide-react';
 import { signIn, signUp, currentUser } from '../store.js';
 
@@ -8,7 +9,14 @@ export default function Auth() {
   const [mode, setMode] = useState('signin');
   const [form, setForm] = useState({ email: '', password: '', name: '' });
   const [err, setErr] = useState('');
-  if (currentUser()) { nav(`/${currentUser().role}`); return null; }
+
+ useEffect(() => {
+  const user = currentUser();
+
+  if (user) {
+    nav(`/${user.role}`);
+  }
+}, [nav]);
 
   function submit(e) {
     e.preventDefault(); setErr('');
